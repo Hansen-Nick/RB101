@@ -31,13 +31,13 @@ def valid_move?(move)
   move_options.include?(move)
 end
 
-intro_prompt = <<-MSG
+beginning_prompt = <<-MSG
   Welcome to Rock, Paper, Scissors, Lizard, Spock!
   Since it is rather rude to merely refer to you as "player 1", I would like
   to know your real name!
     MSG
 
-prompt(intro_prompt)
+prompt(beginning_prompt)
 
 player_name = nil
 loop do
@@ -51,9 +51,13 @@ loop do
   end
 end
 
-prompt "Hello, #{player_name}. I will be your guide throughout this game. Your
-        opponent today will be 'The Borg'.  They are a robotic alien race.  You
-        can hear it muttering 'Resistance is futile' under its breath."
+player_intro_prompt = <<-MSG
+  Hello, #{player_name}. I will be your guide throughout this game. Your
+  opponent today will be 'The Borg'.  They are a robotic alien race.  You
+  can hear it muttering 'Resistance is futile' under its breath.
+    MSG
+
+prompt(player_intro_prompt)
 
 prompt "The first player to reach 5 wins will be the grand victor of the match."
 
