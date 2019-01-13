@@ -1,66 +1,84 @@
 def prompt(message)
-  Kernel.puts("=> #{message}")
+  puts "=> #{message}"
 end
+
+def useable_value(amount)
+  amount.delete!('$')
+  amount.tr!(',', '_')
+  amount.delete!('%', '')
+end
+
+def invalid_duration?(duration)
+  duration.to_i < 0 || duration.to_i.to_s != duration
+end
+
+prompt "Welcome to the Car Payment Calculator!"
+
+name = nil
+loop do
+  prompt "What is your name?"
+  name = gets.chomp.strip
+
+  if name.empty?
+    prompt "You must enter a valid name before continuing."
+  else
+    break
+  end
+end
+
+prompt "Nice to meet you, #{name}! Let us calculate the monthly payment for your
+        potential purchase."
+prompt "First, I will need some information from you."
+prompt "-----------------------------------------------------------------------"
 
 loop do
-  prompt("Welcome to Mortgage Calculator!")
-  prompt("-------------------------------")
-
-  prompt("What is the loan amount?")
-
-  amount = ''
+  loan_amount = nil
   loop do
-    amount = Kernel.gets().chomp()
+    prompt "What is the total loan amount?"
+    loan_amount = gets.chomp
 
-    if amount.empty?() || amount.to_f() < 0
-      prompt("Must enter positive number.")
+    if loan_amount.empty? || useable_value(loan_amount).to_f <= 0
+      prompt "That is not a valid input"
     else
       break
     end
   end
 
-  prompt("What is the interest rate?")
-  prompt("(Example: 5 for 5% or 2.5 for 2.5%)")
-
-  interest_rate = ''
+  rate = nil
   loop do
-    interest_rate = Kernel.gets().chomp()
+    prompt "What is the annual percantage rate?"
+    rate = gets.chomp
 
-    if interest_rate.empty?() || interest_rate.to_f() < 0
-      prompt("Must enter positive number.")
+    if rate.empty? || useable_value(rate).to_f < 0
+      prompt "That is not a valid input"
     else
       break
     end
   end
 
-  prompt("What is the loan duration (in years)?")
-
-  years = ''
+  duration = nil
   loop do
-    years = Kernel.gets().chomp()
+    prompt "What is the loan duration in years?"
+    duration = gets.chomp
 
-    if years.empty?() || years.to_i() < 0
-      prompt("Enter a valid number")
+    if duration.empty? || invalid_duration?(duration)
+      prompt "Your duration needs to be a positive whole number."
     else
       break
     end
   end
 
-  annual_interest_rate = interest_rate.to_f() / 100
-  monthly_interest_rate = annual_interest_rate / 12
-  months = years.to_i() * 12
+  yearly_interest = rate.to_f / 100
+  monthly_interest = yearly_interest / 12
+  month_total = duration.to_f * 12
 
-  monthly_payment = amount.to_f() *
-                    (monthly_interest_rate /
-                    (1 - (1 + monthly_interest_rate)**(-months.to_i())))
-
-  prompt("Your monthly payment is: $#{format('%02.2f', monthly_payment)}")
-
-  prompt("Another calculation?")
-  answer = Kernel.gets().chomp()
-
-  break unless answer.downcase().start_with?('y')
+  monthly_payment = loan_amount.to_f *
+                    (monthly_interest /
+                    (1 - (1 + monthly_interest)**-month_total))
+  prompt "Your monthly payment would be $#{format('%.2f', monthly_payment)}."
+  prompt "Would you like to try again? Input 'Yes' to do so"
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
 end
-
-prompt("Thank you for using the Mortgage Calculator!")
-prompt("Good bye!")
+prompt "Thank you for using the car payment calculator, #{name}."
+prompt "Good luck with your potential purchase!"

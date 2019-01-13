@@ -9,7 +9,7 @@ def useable_value(amount)
 end
 
 def invalid_duration?(duration)
-  duration.to_i < 0 || duration.to_i.to_s != duration
+  duration.to_i <= 0 || duration.to_i.to_s != duration
 end
 
 prompt "Welcome to the Car Payment Calculator!"
@@ -36,8 +36,9 @@ loop do
   loop do
     prompt "What is the total loan amount?"
     loan_amount = gets.chomp
+    useable_value(loan_amount)
 
-    if loan_amount.empty? || useable_value(loan_amount).to_f < 0
+    if loan_amount.empty? || loan_amount.to_f <= 0
       prompt "That is not a valid input"
     else
       break
@@ -48,8 +49,9 @@ loop do
   loop do
     prompt "What is the annual percantage rate?"
     rate = gets.chomp
+    useable_value(rate)
 
-    if rate.empty? || useable_value(rate).to_f < 0
+    if rate.empty? || rate.to_f <= 0
       prompt "That is not a valid input"
     else
       break
