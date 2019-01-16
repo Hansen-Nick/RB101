@@ -13,19 +13,6 @@ def win?(first, second)
   win_conditions[first].include?(second)
 end
 
-def display_results(player, computer)
-  if win?(player, computer)
-    puts "You won!  You now have #{player_win_total} wins and The Borg has
-          #{computer_win_total} wins."
-  elsif win?(computer, player)
-    puts "The Borg won!  The Borg now has #{computer_win_total} wins and you
-          have #{player_win_total} wins."
-  else
-    puts "it's a tie! The score is still #{player_name}: #{player_win_total},
-          The Borg: #{computer_win_total}."
-  end
-end
-
 def valid_move?(move)
   move_options = %w(r p sc l sp)
   move_options.include?(move)
@@ -43,12 +30,8 @@ player_name = nil
 loop do
   prompt "Please type in your name."
   player_name = gets.chomp.strip
-
-  if player_name.empty?
-    prompt "You need to type in a name to continue."
-  else
-    break
-  end
+  if !player_name.empty? break
+  prompt "You need to type in a name to continue."
 end
 
 player_intro_prompt = <<-MSG
@@ -108,6 +91,7 @@ loop do
     end
 
     break if player_win_total == 5 || computer_win_total == 5
+
   end
 
   if player_win_total == 5
