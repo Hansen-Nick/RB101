@@ -30,7 +30,7 @@ player_name = nil
 loop do
   prompt "Please type in your name."
   player_name = gets.chomp.strip
-  if !player_name.empty? break
+  break if !player_name.empty?
   prompt "You need to type in a name to continue."
 end
 
@@ -104,6 +104,9 @@ loop do
   play_again = gets.chomp
 
   break unless play_again.downcase.start_with?('y')
+
+  puts "\e[H\e[2J"
+
 end
 
 prompt "Thank you for playing! I hope you fared well against your adversary."
